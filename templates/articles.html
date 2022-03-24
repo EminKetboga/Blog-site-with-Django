@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block body %}
+
+                    {% if request.user.is_authenticated %}
+                         <h1 class="fw-bolder mb-1">Makaleler Sayfasına HoşGeldin!{{request.user}}<br><small><small>sende makalelere ekleme Yapmak istersen,<a class = "btn btn-primary" href="{% url 'article:addarticle' %}">Buradan Ekleyebilirsin!</a></small></small></h1>
+                    
+                    {% else %}
+                            <h1 class="fw-bolder mb-1">Makaleler Sayfasına HoşGeldin!<br><small><small>Sende makalelere Ekleme Yapmak istersen,<a class = "btn btn-primary" href="{% url 'user:login' %}">Buradan Giriş Yapabilirsin!!</a></small></small></h1>
+                    {% endif %}
+                    {% if articles %}
+                        <form>
+                                {% csrf_token %} 
+                                <br>
+                                <input type="text" name = "keyword" class="input-sm" maxlength="64" placeholder="Makale Başlığı Ara...">
+                            <button type="submit" class="btn btn-primary">Ara</button>
+                        </form>
+                        {% for article in articles %}
+                        <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            
+                            <hr>
+                            <a href ="{% url 'article:detail' article.id %}"><h5>-----{{article.title}}-----</h5></a>
+                            
+                            <!-- Post meta content-->
+                        </header>
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <h5>İçerik:</h5>
+                            <p class="fs-5 mb-4">{{article.content|truncatewords:30}}<a href = "{% url 'article:detail' article.id %}"><small>Devamını Oku</small></a></p>
+                        </section>
+                        <!-- Preview image figure-->
+                        <figure class="mb-4"><img class="img-fluid rounded" src="https://i0.wp.com/hendrickscountyparks.org/wp-content/uploads/2020/01/26172389_128889391241403_4990124275239000264_o.jpg?resize=900%2C400&ssl=1" alt="..." /></figure>
+                        <!-- Post content-->
+                        <div class="text-muted fst-italic mb-2">{{article.created_date}} Tarihinde {{article.author.username}} Tarafından Yazıldı</div>
+                        <br><br>
+                            
+                            
+                        </article>
+                    {% endfor %}
+                    {% else %}
+                    <br><br>
+                    <div class ="alert alert-danger">UPSssss......Henüz Makale Bulunmuyor!</div>
+                    {% endif %}
+                    
+                    
+{% endblock body %}

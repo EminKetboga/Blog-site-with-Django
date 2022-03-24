@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block body %}
+<!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">Blog Gönderisine Hoş Geldiniz!</h1>
+                            <hr>
+                            <p>Şuan '{{articles.title}}' Makalesindesiniz!</p>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">{{articles.created_date}} Tarihinde,{{articles.author.username}} Tarafından Yazıldı.</div>
+                            
+                        </header>
+                        <!-- Preview image figure-->
+                        
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <h3>İçerik :</h3>
+                            <p class="fs-5 mb-4">{{articles.content}}</p>
+                        <figure class="mb-4"><img class="img-fluid rounded" src="https://i0.wp.com/hendrickscountyparks.org/wp-content/uploads/2020/01/26172389_128889391241403_4990124275239000264_o.jpg?resize=900%2C400&ssl=1" alt="..." /></figure>
+                        <!-- Yorumlar Bölümü -->
+                        <h4>Yorumlar:</h4>
+                        <hr><br>
+                        {% for comment in comments %}
+                            <div class="media mb-4">
+                                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                <div class="media-body">
+                                    <h5 class="mt-0">{{comment.comment_author}}</h5>
+                                        <small>{{comment.comment_date}}</small><br>
+                                        {{comment.comment_content}}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <hr><br>
+                        <div class="card my-4">
+                            <h5 class="card-header">-{{articles.title}}- ' Makalesine Yorum Yap!</h5>
+                            <div class="card-body">
+                            <form method = "post" action = "{% url 'article:comment' articles.id %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                                <label for="formGroupExampleInput">İsim:</label>
+                                                <input type="text" name = "comment_author" class="form-control" id="formGroupExampleInput" placeholder="İsminizi Giriniz..">
+                                </div> 
+                                <label for="formGroupExampleInput">Yorum:</label>
+                                <textarea class="form-control" name = "comment_content" rows="3"></textarea>
+                                
+                                <button type="submit" class="btn btn-primary">Ekle</button>
+                            </form>
+                
+                            </div>
+                            </div>
+                            {% if comments %}
+                            
+                            {% else %}
+                            <div class = "alert alert-danger">Henüz Bu Makaleye Yorum Eklenmemiş,Yukardaki Alandan İlk Ekleyen Sen Olabilirsin!</div>
+                            {% endif %}
+                        
+                        <br><br>
+                    </article>
+                   
+                      
+        
+                                
+ 
+
+{% endblock body %}
